@@ -1,19 +1,25 @@
-# Bundle
+# Phoenix Blog
 
-To start your Phoenix server:
+## General Objectives
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  * Interact with all diferent parts of Phoenix, namely:
+    * Channels
+    * LiveView
+    * The "rest"
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+  * Build my personal website with multiple parts such as:
+    * Blog - Ability to create and manage posts
+    * Allow donations (stripe)
+    * Messaging between users
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+  * Develop skills related to:
+    * CI
+    * CD
 
-## Learn more
+## Roadmap
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+  * Phase 1: User + Blog functionality
+  * Phase 2: Messaging (Trying out channels)
+  * Phase 3: LiveView related feature
+    * Live edit of your user profile pic perhaps?
+    * Live edit your profile page
