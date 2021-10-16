@@ -1,4 +1,8 @@
 defmodule Bundle.Accounts.UserToken do
+  @moduledoc """
+  User token schema.
+  """
+
   use Ecto.Schema
   import Ecto.Query
 

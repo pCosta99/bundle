@@ -1,4 +1,8 @@
 defmodule BundleWeb.UserAuth do
+  @moduledoc """
+  Module that deals with user authentication.
+  """
+
   import Plug.Conn
   import Phoenix.Controller
 

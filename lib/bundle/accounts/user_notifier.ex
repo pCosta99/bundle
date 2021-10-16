@@ -1,4 +1,8 @@
 defmodule Bundle.Accounts.UserNotifier do
+  @moduledoc """
+  This module deals with sending emails.
+  """
+
   import Swoosh.Email
 
   alias Bundle.Mailer

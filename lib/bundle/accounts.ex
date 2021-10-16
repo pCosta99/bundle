@@ -3,10 +3,9 @@ defmodule Bundle.Accounts do
   The Accounts context.
   """
 
-  import Ecto.Query, warn: false
-  alias Bundle.Repo
-
   alias Bundle.Accounts.User
+  alias Bundle.Repo
+  import Ecto.Query, warn: false
 
   @doc """
   Returns the list of users.
@@ -102,7 +101,7 @@ defmodule Bundle.Accounts do
     User.changeset(user, attrs)
   end
 
-  alias Bundle.Accounts.{User, UserToken, UserNotifier}
+  alias Bundle.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 
