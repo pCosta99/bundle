@@ -4,34 +4,6 @@ defmodule Bundle.AccountsFixtures do
   entities via the `Bundle.Accounts` context.
   """
 
-  @doc """
-  Generate a unique user email.
-  """
-  def unique_user_email, do: "some email#{System.unique_integer([:positive])}"
-
-  @doc """
-  Generate a unique user name.
-  """
-  def unique_user_name, do: "some name#{System.unique_integer([:positive])}"
-
-  @doc """
-  Generate a user.
-  """
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(%{
-        confirmed_at: ~N[2021-10-09 13:36:00],
-        email: unique_user_email(),
-        hashed_password: "some hashed_password",
-        name: unique_user_name(),
-        password: "some password"
-      })
-      |> Bundle.Accounts.create_user()
-
-    user
-  end
-
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
