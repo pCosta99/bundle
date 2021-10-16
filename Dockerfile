@@ -40,7 +40,7 @@ COPY assets assets
 # COPY lib lib
 
 # build assets
-RUN npm run --prefix ./assets deploy
+#RUN npm run --prefix ./assets deploy
 RUN mix phx.digest
 
 # copy source here if not using TailwindCSS
@@ -65,7 +65,6 @@ RUN chown nobody:nobody /app
 USER nobody:nobody
 
 COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/bundle ./
-COPY --from=build --chown=nobody:nobody /app/data ./data/
 
 ENV HOME=/app
 ENV MIX_ENV=prod

@@ -3,7 +3,7 @@ defmodule Bundle.Release do
   Functions to be run on releases.
   """
 
-  @app :vincolo
+  @app :bundle
 
   def migrate do
     load_app()

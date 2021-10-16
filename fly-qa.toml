@@ -9,7 +9,7 @@ processes = []
 [env]
 
 [deploy]
-  release_command = "/app/bin/hello_elixir eval Bundle.Release.migrate"
+  release_command = "/app/bin/bundle eval Bundle.Release.migrate"
 
 [[services]]
   internal_port = 4000
