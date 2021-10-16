@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+env:
+  MIX_ENV: test
+  ImageOS: 'ubuntu20'
+
+jobs:
+  deps:
+    name: Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [1.12.2]
+        otp: [24.1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+
+      - name: Install dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix deps.get
+          mix deps.compile
+
+  static_analysis:
+    name: Static code analysis
+    needs: deps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [1.12.2]
+        otp: [24.1]
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+
+     - name: Setup
+       uses: erlef/setup-beam@v1
+       with:
+         elixir-version: ${{ matrix.elixir }}
+         otp-version: ${{ matrix.otp }}
+
+     - name: Retrieve Cached Dependencies
+       uses: actions/cache@v2
+       id: mix-cache
+       with:
+         path: |
+           deps
+           _build
+         key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+
+     - name: Check Code Format
+       run: mix format --check-formatted
+
+     - name: Run Credo
+       run: mix credo
+
+     - name: Run Sobelow
+       run: mix sobelow
+
+  unit_testing:
+    name: Unit tests with mix test
+    needs: deps
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: vincolo_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    strategy:
+      # fail-fast: false ? Is it worth?
+      matrix:
+        elixir: [1.12.2]
+        otp: [24.1]
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+
+     - name: Setup
+       uses: erlef/setup-beam@v1
+       with:
+         elixir-version: ${{ matrix.elixir }}
+         otp-version: ${{ matrix.otp }}
+
+     - name: Retrieve Cached Dependencies
+       uses: actions/cache@v2
+       id: mix-cache
+       with:
+         path: |
+           deps
+           _build
+         key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+
+     - name: Run reset
+       run: mix ecto.reset
+
+     - name: Run populate task
+       run: mix populate
+
+     - name: Run tests
+       run: mix test --trace --slowest 10

@@ -3,8 +3,20 @@ defmodule BundleWeb.UserControllerTest do
 
   import Bundle.AccountsFixtures
 
-  @create_attrs %{confirmed_at: ~N[2021-10-09 13:36:00], email: "some email", hashed_password: "some hashed_password", name: "some name", password: "some password"}
-  @update_attrs %{confirmed_at: ~N[2021-10-10 13:36:00], email: "some updated email", hashed_password: "some updated hashed_password", name: "some updated name", password: "some updated password"}
+  @create_attrs %{
+    confirmed_at: ~N[2021-10-09 13:36:00],
+    email: "some email",
+    hashed_password: "some hashed_password",
+    name: "some name",
+    password: "some password"
+  }
+  @update_attrs %{
+    confirmed_at: ~N[2021-10-10 13:36:00],
+    email: "some updated email",
+    hashed_password: "some updated hashed_password",
+    name: "some updated name",
+    password: "some updated password"
+  }
   @invalid_attrs %{confirmed_at: nil, email: nil, hashed_password: nil, name: nil, password: nil}
 
   describe "index" do
