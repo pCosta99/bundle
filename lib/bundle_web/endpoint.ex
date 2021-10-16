@@ -7,7 +7,7 @@ defmodule BundleWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_bundle_key",
-    signing_salt: "xXnuRY2f"
+    signing_salt: "SukoPLrE"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
