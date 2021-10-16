@@ -23,10 +23,13 @@ defmodule BundleWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", BundleWeb do
-  #   pipe_through :api
-  # end
+  scope "/auth", BundleWeb do
+    pipe_through :browser
+
+    get "/:provider", GithubAuthController, :request
+    get "/:provider/callback", GithubAuthController, :callback
+    post "/:provider/callback", GithubAuthController, :callback
+  end
 
   # Enables LiveDashboard only for development
   #
