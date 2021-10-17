@@ -118,11 +118,5 @@ jobs:
            _build
          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
 
-     - name: Run reset
-       run: mix ecto.reset
-
-     - name: Run populate task
-       run: mix populate
-
      - name: Run tests
        run: mix test --trace --slowest 10
