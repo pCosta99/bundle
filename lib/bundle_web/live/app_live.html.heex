@@ -1,0 +1,17 @@
+<section>
+<div class="flex items-center justify-center">
+  <div class="mt-80 ml-80">
+    <h1 class="text-9xl font-extrabold bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"><%= gettext "%{name}", name: "BUNDLE" %></h1>
+    <p class="text-white text-center">Where it all comes together!</p>
+    <div class="flex justify-center mt-20">
+      <button phx-click="logout"
+              action={Routes.user_session_path(@socket, :delete)}
+              phx-trigger-action={@trigger_logout}
+              type="button"
+              class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Logout
+      </button>
+    </div>
+  </div>
+</div>
+</section>

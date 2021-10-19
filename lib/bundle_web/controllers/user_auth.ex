@@ -9,12 +9,24 @@ defmodule BundleWeb.UserAuth do
   alias Bundle.Accounts
   alias BundleWeb.Router.Helpers, as: Routes
 
+  alias BundleWeb.{
+    AppLive,
+    PageLive,
+    Endpoint
+  }
+
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
   # the token expiry itself in UserToken.
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "_bundle_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
+  @pubsub_topic "user_updates"
+
+  @doc """
+  Returns the pubsub topic name for receiving  notifications when a user updated
+  """
+  def pubsub_topic, do: @pubsub_topic
 
   @doc """
   Logs the user in.
@@ -85,7 +97,7 @@ defmodule BundleWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: "/")
+    |> redirect(to: Routes.live_path(Endpoint, PageLive))
   end
 
   @doc """
@@ -138,7 +150,7 @@ defmodule BundleWeb.UserAuth do
       conn
       |> put_flash(:error, "You must log in to access this page.")
       |> maybe_store_return_to()
-      |> redirect(to: Routes.user_session_path(conn, :new))
+      |> redirect(to: Routes.live_path(Endpoint, PageLive))
       |> halt()
     end
   end
@@ -149,5 +161,5 @@ defmodule BundleWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: "/"
+  defp signed_in_path(_conn), do: Routes.live_path(Endpoint, AppLive)
 end

@@ -16,6 +16,16 @@ defmodule Bundle.Accounts.User do
   end
 
   @doc """
+  User changeset for login.
+  All that's required is the presence of an email and a password.
+  """
+  def login_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_required([:email, :password])
+  end
+
+  @doc """
   A user changeset for registration.
 
   It is important to validate the length of both email and password.

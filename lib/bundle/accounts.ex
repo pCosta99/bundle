@@ -90,6 +90,12 @@ defmodule Bundle.Accounts do
     if User.valid_password?(user, password), do: user
   end
 
+  ## User login
+  def login_user(attrs) do
+    %User{}
+    |> User.login_changeset(attrs)
+  end
+
   ## User registration
 
   @doc """

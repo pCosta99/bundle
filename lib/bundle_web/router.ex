@@ -17,17 +17,6 @@ defmodule BundleWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", BundleWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", BundleWeb do
-  #   pipe_through :api
-  # end
-
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -57,13 +46,22 @@ defmodule BundleWeb.Router do
   end
 
   ## Authentication routes
+  scope "/app", BundleWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live "/", AppLive
+    get "/users/settings", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
+    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+  end
 
   scope "/", BundleWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    live "/", PageLive
+
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
     get "/users/reset_password", UserResetPasswordController, :new
     post "/users/reset_password", UserResetPasswordController, :create
@@ -72,17 +70,9 @@ defmodule BundleWeb.Router do
   end
 
   scope "/", BundleWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-  end
-
-  scope "/", BundleWeb do
     pipe_through [:browser]
 
-    delete "/users/log_out", UserSessionController, :delete
+    get "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
